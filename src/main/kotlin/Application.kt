@@ -13,17 +13,6 @@ import kotlinx.coroutines.runBlocking
 fun Application.module() {
     DatabaseFactory.init()
 
-    runBlocking {
-
-        val api = NobelApi()
-
-        val response = api.getPrizes()
-
-        println(
-            "Loaded prizes: ${response.nobelPrizes.size}"
-        )
-    }
-
     configureSerialization()
     configureMonitoring()
     configureSecurity()

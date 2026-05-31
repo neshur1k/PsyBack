@@ -7,6 +7,7 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.authenticate
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import com.example.routes.userRoutes
 
 fun Application.configureRouting() {
 
@@ -16,13 +17,18 @@ fun Application.configureRouting() {
     routing {
 
         get("/") {
-            call.respondText("Nobel API is running 🚀")
+            call.respondText(
+                "Nobel API is running 🚀"
+            )
         }
 
         authRoutes()
 
         authenticate {
+
             prizeRoutes(repository)
+
+            userRoutes()
         }
     }
 }

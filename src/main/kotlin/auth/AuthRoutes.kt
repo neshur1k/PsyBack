@@ -15,15 +15,8 @@ fun Route.authRoutes() {
     println("AUTH ROUTES LOADED")
 
     post("/auth/login") {
-        /*
-        val request = call.receiveText()
-        println("RAW BODY: $request")
-        val parsed = kotlinx.serialization.json.Json.decodeFromString<LoginRequest>(request)
-        println("PARSED: $parsed")
-        */
+
         val request = call.receive<LoginRequest>()
-        //println(request)
-        //println("got it")
 
         if (
             request.login == "admin" &&
@@ -36,6 +29,10 @@ fun Route.authRoutes() {
                 )
                 .withAudience(
                     JwtConfig.AUDIENCE
+                )
+                .withClaim(
+                    "username",
+                    request.login
                 )
                 .withExpiresAt(
                     Date(
