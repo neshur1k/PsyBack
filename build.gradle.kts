@@ -30,4 +30,15 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json")
     implementation("io.ktor:ktor-server-call-logging:3.1.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json")
+
+    implementation("org.jetbrains.exposed:exposed-core:0.53.0")
+    implementation("org.jetbrains.exposed:exposed-dao:0.53.0")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.53.0")
+    implementation("org.postgresql:postgresql:42.7.3")
+    implementation("org.jetbrains.exposed:exposed-java-time:0.53.0")
+
+    implementation("io.ktor:ktor-client-core:3.1.3")
+    implementation("io.ktor:ktor-client-cio:3.1.3")
+    implementation("io.ktor:ktor-client-content-negotiation:3.1.3")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:3.1.3")
 }
