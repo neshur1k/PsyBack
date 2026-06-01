@@ -8,6 +8,7 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import com.example.routes.userRoutes
+import com.example.routes.userPrizeRoutes
 
 fun Application.configureRouting() {
 
@@ -29,6 +30,8 @@ fun Application.configureRouting() {
             prizeRoutes(repository)
 
             userRoutes()
+
+            userPrizeRoutes()
         }
     }
 }
