@@ -41,4 +41,6 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:3.1.3")
     implementation("io.ktor:ktor-client-content-negotiation:3.1.3")
     implementation("io.ktor:ktor-serialization-kotlinx-json:3.1.3")
+    implementation("io.ktor:ktor-server-openapi")
+    implementation("io.ktor:ktor-server-swagger")
 }

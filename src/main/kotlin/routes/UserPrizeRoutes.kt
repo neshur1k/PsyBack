@@ -16,6 +16,7 @@ import com.example.data.model.FavoritePrizeResponse
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.deleteWhere
 
 fun Route.userPrizeRoutes() {
 
@@ -107,6 +108,48 @@ fun Route.userPrizeRoutes() {
             }
 
             call.respond(prizes)
+        }
+
+        delete("/users/me/prizes/{prizeId}") {
+
+            val principal =
+                call.principal<JWTPrincipal>()
+
+            val username =
+                principal
+                    ?.payload
+                    ?.getClaim("username")
+                    ?.asString()
+
+            val prizeId =
+                call.parameters["prizeId"]
+                    ?.toIntOrNull()
+
+            if (prizeId == null) {
+                call.respond(HttpStatusCode.BadRequest)
+                return@delete
+            }
+
+            val userId = transaction {
+
+                UsersTable
+                    .selectAll()
+                    .first {
+                        it[UsersTable.username] == username
+                    }[UsersTable.id]
+            }
+
+            transaction {
+
+                UserPrizesTable.deleteWhere {
+                    (UserPrizesTable.userId eq userId) and
+                            (UserPrizesTable.prizeId eq prizeId)
+                }
+            }
+
+            call.respondText(
+                "Prize removed from favorites"
+            )
         }
     }
 }

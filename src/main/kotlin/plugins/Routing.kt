@@ -9,6 +9,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import com.example.routes.userRoutes
 import com.example.routes.userPrizeRoutes
+import io.ktor.server.plugins.openapi.openAPI
+import io.ktor.server.plugins.swagger.swaggerUI
 
 fun Application.configureRouting() {
 
@@ -16,6 +18,16 @@ fun Application.configureRouting() {
         NobelRepositoryImpl()
 
     routing {
+
+        openAPI(
+            path = "openapi",
+            swaggerFile = "openapi/documentation.yaml"
+        )
+
+        swaggerUI(
+            path = "swagger",
+            swaggerFile = "openapi/documentation.yaml"
+        )
 
         get("/") {
             call.respondText(

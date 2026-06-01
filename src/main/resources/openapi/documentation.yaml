@@ -1,0 +1,22 @@
+openapi: 3.0.3
+
+info:
+  title: Nobel API
+  description: Nobel Prize API with JWT authentication
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /auth/login:
+    post:
+      summary: Login
+      responses:
+        '200':
+          description: JWT token
+
+components:
+  schemas:
+    Empty:
+      type: object
