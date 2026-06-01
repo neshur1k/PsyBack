@@ -11,6 +11,11 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
+import com.example.data.db.table.PrizesTable
+import com.example.data.model.FavoritePrizeResponse
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.and
 
 fun Route.userPrizeRoutes() {
 
@@ -65,6 +70,43 @@ fun Route.userPrizeRoutes() {
             call.respondText(
                 "Prize added to favorites"
             )
+        }
+
+        get("/users/me/prizes") {
+
+            val principal =
+                call.principal<JWTPrincipal>()
+
+            val username =
+                principal
+                    ?.payload
+                    ?.getClaim("username")
+                    ?.asString()
+
+            val userId = transaction {
+
+                UsersTable
+                    .selectAll()
+                    .first {
+                        it[UsersTable.username] == username
+                    }[UsersTable.id]
+            }
+
+            val prizes: List<FavoritePrizeResponse> = transaction {
+
+                (UserPrizesTable innerJoin PrizesTable)
+                    .select(UserPrizesTable.userId eq userId)
+                    .map {
+                        FavoritePrizeResponse(
+                            id = it[PrizesTable.id],
+                            awardYear = it[PrizesTable.awardYear],
+                            category = it[PrizesTable.category],
+                            fullName = it[PrizesTable.fullName]
+                        )
+                    }
+            }
+
+            call.respond(prizes)
         }
     }
 }

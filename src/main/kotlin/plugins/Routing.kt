@@ -19,7 +19,7 @@ fun Application.configureRouting() {
 
         get("/") {
             call.respondText(
-                "Nobel API is running 🚀"
+                "Nobel API is running"
             )
         }
 
