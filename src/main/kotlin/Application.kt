@@ -2,7 +2,9 @@ package com.example
 
 import com.example.database.DatabaseFactory
 import com.example.plugins.configureSecurity
+import com.example.repository.ArticleRepositoryImpl
 import com.example.repository.UserRepositoryImpl
+import com.example.routes.articleRoutes
 import com.example.routes.authRoutes
 import com.example.routes.profileRoutes
 import io.ktor.server.application.*
@@ -24,6 +26,7 @@ fun Application.module() {
     configureSecurity()
 
     val userRepository = UserRepositoryImpl()
+    val articleRepository = ArticleRepositoryImpl()
 
     routing {
 
@@ -38,6 +41,11 @@ fun Application.module() {
         )
 
         profileRoutes(userRepository)
+
+        articleRoutes(
+            articleRepository,
+            userRepository
+        )
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.database
 
+import com.example.tables.ArticlesTable
 import com.example.tables.UsersTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -21,7 +22,10 @@ object DatabaseFactory {
         )
 
         transaction {
-            SchemaUtils.create(UsersTable)
+            SchemaUtils.create(
+                UsersTable,
+                ArticlesTable
+            )
         }
     }
 }
