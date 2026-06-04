@@ -43,4 +43,6 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:3.1.3")
     implementation("io.ktor:ktor-server-openapi")
     implementation("io.ktor:ktor-server-swagger")
+
+    implementation("org.mindrot:jbcrypt:0.4")
 }

@@ -3,7 +3,8 @@ package com.example.dto
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class LoginRequest(
+data class RegisterRequest(
     val login: String,
-    val password: String
+    val password: String,
+    val nickname: String
 )
