@@ -7,6 +7,7 @@ import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 
 class UserRepositoryImpl : UserRepository {
 
@@ -74,6 +75,23 @@ class UserRepositoryImpl : UserRepository {
             }
             .singleOrNull()
             ?.toUser()
+    }
+
+    override fun updateProfile(
+        userId: Int,
+        nickname: String,
+        bio: String
+    ) {
+        transaction {
+
+            UsersTable.update(
+                { UsersTable.id eq userId }
+            ) {
+
+                it[UsersTable.nickname] = nickname
+                it[UsersTable.bio] = bio
+            }
+        }
     }
 }
 

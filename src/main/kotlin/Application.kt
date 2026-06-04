@@ -4,6 +4,7 @@ import com.example.database.DatabaseFactory
 import com.example.plugins.configureSecurity
 import com.example.repository.UserRepositoryImpl
 import com.example.routes.authRoutes
+import com.example.routes.profileRoutes
 import io.ktor.server.application.*
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
@@ -35,6 +36,8 @@ fun Application.module() {
         authRoutes(
             repository = userRepository
         )
+
+        profileRoutes(userRepository)
     }
 
 }

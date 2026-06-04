@@ -18,4 +18,10 @@ interface UserRepository {
     fun findById(
         id: Int
     ): User?
+
+    fun updateProfile(
+        userId: Int,
+        nickname: String,
+        bio: String
+    )
 }
