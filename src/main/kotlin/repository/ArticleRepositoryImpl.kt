@@ -4,10 +4,14 @@ import com.example.models.Article
 import com.example.models.ArticleCategory
 import com.example.tables.ArticlesTable
 import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDateTime
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.sql.and
 
 class ArticleRepositoryImpl : ArticleRepository {
     private fun ResultRow.toArticle(): Article {
@@ -74,5 +78,45 @@ class ArticleRepositoryImpl : ArticleRepository {
             }
             .singleOrNull()
             ?.toArticle()
+    }
+
+    override fun updateArticle(
+        id: Int,
+        title: String,
+        content: String,
+        category: String
+    ): Boolean = transaction {
+
+        ArticlesTable.update(
+            { ArticlesTable.id eq id }
+        ) {
+
+            it[ArticlesTable.title] = title
+            it[ArticlesTable.content] = content
+            it[ArticlesTable.category] = category
+        } > 0
+    }
+
+    override fun deleteArticle(
+        id: Int
+    ): Boolean = transaction {
+
+        ArticlesTable.deleteWhere {
+            ArticlesTable.id eq id
+        } > 0
+    }
+
+    override fun getArticlesByCategory(
+        category: String
+    ): List<Article> = transaction {
+
+        ArticlesTable
+            .selectAll()
+            .where {
+                ArticlesTable.category eq category
+            }
+            .map {
+                it.toArticle()
+            }
     }
 }

@@ -16,4 +16,19 @@ interface ArticleRepository {
     fun getArticleById(
         id: Int
     ): Article?
+
+    fun updateArticle(
+        id: Int,
+        title: String,
+        content: String,
+        category: String
+    ): Boolean
+
+    fun deleteArticle(
+        id: Int
+    ): Boolean
+
+    fun getArticlesByCategory(
+        category: String
+    ): List<Article>
 }
