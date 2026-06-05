@@ -168,34 +168,17 @@ fun Route.articleRoutes(
         val category =
             call.request.queryParameters["category"]
 
-        val articles =
-            if (category.isNullOrBlank()) {
-                articleRepository.getAllArticles()
-            } else {
-                articleRepository.getArticlesByCategory(
-                    category
-                )
-            }
-
         val response =
-            articles.map { article ->
+            if (category.isNullOrBlank()) {
 
-                val author =
-                    userRepository.findById(
-                        article.authorId
+                articleRepository.getAllArticlesWithAuthors()
+
+            } else {
+
+                articleRepository
+                    .getArticlesWithAuthorsByCategory(
+                        category
                     )
-
-                ArticleResponse(
-                    id = article.id,
-                    title = article.title,
-                    content = article.content,
-                    category = article.category.name,
-                    authorId = article.authorId,
-                    authorNickname =
-                        author?.nickname ?: "Unknown",
-                    createdAt =
-                        article.createdAt.toString()
-                )
             }
 
         call.respond(response)

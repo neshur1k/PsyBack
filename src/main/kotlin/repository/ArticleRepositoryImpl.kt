@@ -12,6 +12,9 @@ import java.time.LocalDateTime
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.update
 import org.jetbrains.exposed.sql.and
+import com.example.dto.ArticleWithAuthorResponse
+import com.example.tables.UsersTable
+import org.jetbrains.exposed.sql.JoinType
 
 class ArticleRepositoryImpl : ArticleRepository {
     private fun ResultRow.toArticle(): Article {
@@ -119,4 +122,60 @@ class ArticleRepositoryImpl : ArticleRepository {
                 it.toArticle()
             }
     }
+
+    override fun getAllArticlesWithAuthors(): List<ArticleWithAuthorResponse> =
+        transaction {
+
+            ArticlesTable
+                .join(
+                    UsersTable,
+                    JoinType.INNER,
+                    ArticlesTable.authorId,
+                    UsersTable.id
+                )
+                .selectAll()
+                .map {
+
+                    ArticleWithAuthorResponse(
+                        id = it[ArticlesTable.id],
+                        title = it[ArticlesTable.title],
+                        content = it[ArticlesTable.content],
+                        category = it[ArticlesTable.category],
+                        authorId = it[ArticlesTable.authorId],
+                        authorNickname = it[UsersTable.nickname],
+                        createdAt = it[ArticlesTable.createdAt].toString()
+                    )
+                }
+        }
+
+    override fun getArticlesWithAuthorsByCategory(
+        category: String
+    ): List<ArticleWithAuthorResponse> =
+        transaction {
+
+            ArticlesTable
+                .join(
+                    UsersTable,
+                    JoinType.INNER,
+                    ArticlesTable.authorId,
+                    UsersTable.id
+                )
+                .selectAll()
+                .where {
+                    ArticlesTable.category eq category
+                }
+                .map {
+
+                    ArticleWithAuthorResponse(
+                        id = it[ArticlesTable.id],
+                        title = it[ArticlesTable.title],
+                        content = it[ArticlesTable.content],
+                        category = it[ArticlesTable.category],
+                        authorId = it[ArticlesTable.authorId],
+                        authorNickname = it[UsersTable.nickname],
+                        createdAt = it[ArticlesTable.createdAt].toString()
+                    )
+                }
+        }
+
 }

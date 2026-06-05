@@ -1,5 +1,6 @@
 package com.example.repository
 
+import com.example.dto.ArticleWithAuthorResponse
 import com.example.models.Article
 
 interface ArticleRepository {
@@ -31,4 +32,10 @@ interface ArticleRepository {
     fun getArticlesByCategory(
         category: String
     ): List<Article>
+
+    fun getAllArticlesWithAuthors(): List<ArticleWithAuthorResponse>
+
+    fun getArticlesWithAuthorsByCategory(
+        category: String
+    ): List<ArticleWithAuthorResponse>
 }
